@@ -11,5 +11,6 @@ class MainActivity : AppCompatActivity() {
         val transaction = fragmentManager.beginTransaction()
         transaction.add(R.id.mainActivity, BooksListFragment())
         transaction.commit()
+
     }
 }
