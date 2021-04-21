@@ -19,25 +19,25 @@ class BooksListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val dataBaseHelper = DataBaseHelper(this.context!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter()
+        val adapter = BooksListAdapter(dataBaseHelper.showBooks())
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab)
-        floatingActionButton.setOnClickListener(View.OnClickListener {
-            val fragmentManager = fragmentManager
-            val transaction = fragmentManager?.beginTransaction()
-            if (transaction != null) {
-                transaction.replace(R.id.mainActivity, BooksDetailFragment())
-            }
-            if (transaction != null) {
-                transaction.addToBackStack("add")
-            }
-            if (transaction != null) {
-                transaction.commit()
-            }
-        })
+        floatingActionButton.setOnClickListener {
+            replaceDetailFragment()
+        }
 
+
+    }
+
+    private fun replaceDetailFragment() {
+        val fragmentManager = fragmentManager
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.mainActivity, BooksDetailFragment())
+        transaction?.addToBackStack("add")
+        transaction?.commit()
     }
 }

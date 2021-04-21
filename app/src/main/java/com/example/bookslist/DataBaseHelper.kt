@@ -6,34 +6,37 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.BaseColumns
+import android.provider.BaseColumns._ID
 import java.util.ArrayList
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
-        val CREATE_BOOKS_TABLE = ("CREATE TABLE " + TABLE_BOOKS +
-                "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_AUTHOR + " TEXT" + ")")
+        val CREATE_BOOKS_TABLE = (
+                "CREATE TABLE $TABLE_BOOKS ( $_ID INTEGER PRIMARY KEY AUTOINCREMENT, $KEY_NAME TEXT NOT NULL, $KEY_AUTHOR  TEXT NOT NULL)")
         db?.execSQL(CREATE_BOOKS_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        val SQL_DROP_TABLE = "DROP TABLE IF EXISTS $TABLE_BOOKS"
+        db?.execSQL(SQL_DROP_TABLE)
+        onCreate(db)
     }
 
-    companion object {
+    companion object : BaseColumns {
         private const val DATABASE_NAME = "booksDataBase"
         private const val TABLE_BOOKS = "BooksTable"
-        private const val KEY_ID = "_id"
         private const val KEY_NAME = "name"
         private const val KEY_AUTHOR = "author"
+        private const val KEY_ID = _ID
 
     }
 
-    fun addBook(book: BooksModel): Long {
+    fun addBook(name: String, author: String): Long {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, book.name)
-        contentValues.put(KEY_AUTHOR, book.author)
+        contentValues.put(KEY_NAME, name)
+        contentValues.put(KEY_AUTHOR, author)
         val success = db.insert(TABLE_BOOKS, null, contentValues)
         db.close()
         return success
@@ -50,19 +53,21 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             db.execSQL(selectQuery)
             return ArrayList()
         }
+        val idPos = cursor.getColumnIndex(KEY_ID)
+        val authorPos = cursor.getColumnIndex(KEY_AUTHOR)
+        val namePos = cursor.getColumnIndex(KEY_NAME)
         var name: String
         var author: String
-        var id: Int
-        if (cursor.moveToFirst()) {
-            do {
-                id = cursor.getInt(cursor.getColumnIndex(KEY_ID))
-                author = cursor.getString(cursor.getColumnIndex(KEY_AUTHOR))
-                name = cursor.getString(cursor.getColumnIndex(KEY_NAME))
-                val book = BooksModel(name, author, id)
-                booksList.add(book)
+        var id: String
 
-            } while (cursor.moveToNext())
+        while (cursor.moveToFirst()) {
+            author = cursor.getString(authorPos)
+            name = cursor.getString(namePos)
+            id = cursor.getString(idPos)
+            val book = BooksModel(name, author, id)
+            booksList.add(book)
         }
+        cursor.close()
         return booksList
     }
 
@@ -71,7 +76,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val contentValues = ContentValues()
         contentValues.put(KEY_NAME, book.name)
         contentValues.put(KEY_AUTHOR, book.author)
-        val success = db.update(TABLE_BOOKS, contentValues, KEY_ID + "=" + book.id, null)
+        val success = db.update(TABLE_BOOKS, contentValues, _ID + "=" + book.id, null)
         db.close()
         return success
     }
@@ -79,8 +84,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     fun deleteBook(book: BooksModel): Int {
         val db = this.writableDatabase
         val contentValues = ContentValues()
-        contentValues.put(KEY_ID,book.id)
-        val success = db.delete(TABLE_BOOKS, KEY_ID + "=" + book.id,null)
+        contentValues.put(_ID, book.id)
+        val success = db.delete(TABLE_BOOKS, _ID + "=" + book.id, null)
         db.close()
         return success
     }

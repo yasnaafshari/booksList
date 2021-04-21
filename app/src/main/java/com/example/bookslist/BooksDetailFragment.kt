@@ -24,46 +24,51 @@ class BooksDetailFragment : Fragment() {
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
-        var id = 0
+        val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
+        val updateButton = view.findViewById<MaterialButton>(R.id.updateButton)
+        val cancelButton = view.findViewById<MaterialButton>(R.id.cancelButton)
+        cancelButton.setOnClickListener {
+            replaceListFragment()
+        }
+
         val dataBaseHelper = DataBaseHelper(this.context!!)
 
         saveButton.setOnClickListener {
-            if (nameEditText.text != null && authorEditText.text != null) {
-                saveToDataManager(nameEditText, authorEditText, id)
-
-                val status = dataBaseHelper.addBook(
-                    BooksModel(
-                        nameEditText.text.toString(),
-                        authorEditText.text.toString(),
-                        0
-                    )
-                )
-                if (status > -1) {
-                    Toast.makeText(this.context, "book saved!", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(this.context, "book didn't save!", Toast.LENGTH_LONG).show()
-                }
-                id++
-                replaceListFragment()
-            }
+            saveBook(nameEditText, authorEditText, dataBaseHelper)
         }
     }
 
-    private fun saveToDataManager(
+    private fun saveBook(
         nameEditText: EditText,
         authorEditText: EditText,
-        id: Int
+        dataBaseHelper: DataBaseHelper
     ) {
+        var isValid = true
+        nameEditText.error = if (nameEditText.text.toString().isEmpty()) {
+            isValid = false
+            "Required Field"
+        } else null
+        authorEditText.error = if (authorEditText.text.toString().isEmpty()) {
+            isValid = false
+            "Required Field"
+        } else null
+        if (isValid) {
 
-        DataManager.booksList.add(
-            BooksModel(
+            val status = dataBaseHelper.addBook(
                 nameEditText.text.toString(),
                 authorEditText.text.toString(),
-                id
             )
-        )
-
+            if (status <= -1) {
+                Toast.makeText(
+                    this.context,
+                    "book didn't save!",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else Toast.makeText(this.context, "book saved!", Toast.LENGTH_LONG).show()
+            replaceListFragment()
+        }
     }
+
 
     private fun replaceListFragment() {
         val fragmentManager = fragmentManager

@@ -30,8 +30,40 @@
         android:text="save"
         android:backgroundTint="@color/teal_700"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/deleteButton"
+        app:layout_constraintTop_toBottomOf="@id/authorEditText" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="Delete"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintEnd_toStartOf="@id/saveButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/authorEditText" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="update"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintEnd_toEndOf="@id/deleteButton"
+        app:layout_constraintStart_toStartOf="@id/deleteButton"
+        app:layout_constraintTop_toBottomOf="@id/deleteButton" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:text="cancel"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintEnd_toEndOf="@id/saveButton"
+        app:layout_constraintStart_toStartOf="@id/saveButton"
+        app:layout_constraintTop_toTopOf="@id/updateButton"
+        app:layout_constraintBottom_toBottomOf="@id/updateButton"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

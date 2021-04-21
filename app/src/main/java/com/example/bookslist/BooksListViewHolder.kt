@@ -7,4 +7,5 @@ import androidx.recyclerview.widget.RecyclerView
 class BooksListViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
     val bookName = itemView.findViewById<TextView>(R.id.bookName)
     val bookAuthor = itemView.findViewById<TextView>(R.id.bookAuthor)
+
 }
