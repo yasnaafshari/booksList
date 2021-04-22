@@ -60,7 +60,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         var author: String
         var id: String
 
-        while (cursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
             author = cursor.getString(authorPos)
             name = cursor.getString(namePos)
             id = cursor.getString(idPos)
