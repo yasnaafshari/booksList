@@ -21,7 +21,7 @@ class BooksListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val dataBaseHelper = DataBaseHelper(this.context!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter(dataBaseHelper.showBooks())
+        val adapter = BooksListAdapter(dataBaseHelper.showBooks(), this.context!!)
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
@@ -30,13 +30,12 @@ class BooksListFragment : Fragment() {
             replaceDetailFragment()
         }
 
-
     }
 
     private fun replaceDetailFragment() {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.mainActivity, BooksDetailFragment())
+        transaction?.replace(R.id.mainActivity, AddBookFragment())
         transaction?.addToBackStack("add")
         transaction?.commit()
     }

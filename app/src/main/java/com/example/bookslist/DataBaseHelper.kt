@@ -76,7 +76,9 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val contentValues = ContentValues()
         contentValues.put(KEY_NAME, book.name)
         contentValues.put(KEY_AUTHOR, book.author)
-        val success = db.update(TABLE_BOOKS, contentValues, _ID + "=" + book.id, null)
+        val selection = "$KEY_ID LIKE ? "
+        val selectionArgs = arrayOf(book.id)
+        val success = db.update(TABLE_BOOKS, contentValues, selection,selectionArgs)
         db.close()
         return success
     }
@@ -88,5 +90,39 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val success = db.delete(TABLE_BOOKS, _ID + "=" + book.id, null)
         db.close()
         return success
+    }
+
+    fun fetchBook(bookId: String): BooksModel? {
+        val db = this.readableDatabase
+        var book: BooksModel? = null
+        val columns: Array<String> = arrayOf(
+            KEY_NAME,
+            KEY_AUTHOR
+        )
+        val selection = KEY_ID + " LIKE ? "
+        val selectionArgs = arrayOf(bookId)
+        val cursor = db.query(
+            TABLE_BOOKS,
+            columns,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+        val authorPos = cursor.getColumnIndex(KEY_AUTHOR)
+        val namePos = cursor.getColumnIndex(KEY_NAME)
+        var name: String
+        var author: String
+        var id: String
+
+        while (cursor.moveToNext()) {
+            author = cursor.getString(authorPos)
+            name = cursor.getString(namePos)
+
+            book = BooksModel(name, author, bookId)
+        }
+        cursor.close()
+        return book
     }
 }

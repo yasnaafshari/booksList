@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 
-class BooksDetailFragment : Fragment() {
+class AddBookFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,12 +25,6 @@ class BooksDetailFragment : Fragment() {
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
-        val updateButton = view.findViewById<MaterialButton>(R.id.updateButton)
-        val cancelButton = view.findViewById<MaterialButton>(R.id.cancelButton)
-        cancelButton.setOnClickListener {
-            replaceListFragment()
-        }
-
         val dataBaseHelper = DataBaseHelper(this.context!!)
 
         saveButton.setOnClickListener {
