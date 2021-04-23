@@ -37,16 +37,14 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val contentValues = ContentValues()
         contentValues.put(KEY_NAME, name)
         contentValues.put(KEY_AUTHOR, author)
-        val success = db.insert(TABLE_BOOKS, null, contentValues)
-        db.close()
-        return success
+        return db.insert(TABLE_BOOKS, null, contentValues)
     }
 
     fun showBooks(): ArrayList<BooksModel> {
         val booksList = ArrayList<BooksModel>()
         val selectQuery = "SELECT  * FROM $TABLE_BOOKS"
         val db = this.readableDatabase
-        var cursor: Cursor?
+        val cursor: Cursor?
         try {
             cursor = db.rawQuery(selectQuery, null)
         } catch (e: SQLiteException) {
@@ -78,18 +76,14 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         contentValues.put(KEY_AUTHOR, book.author)
         val selection = "$KEY_ID LIKE ? "
         val selectionArgs = arrayOf(book.id)
-        val success = db.update(TABLE_BOOKS, contentValues, selection,selectionArgs)
-        db.close()
-        return success
+        return db.update(TABLE_BOOKS, contentValues, selection, selectionArgs)
     }
 
-    fun deleteBook(book: BooksModel): Int {
+    fun deleteBook(bookId: String): Int {
         val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(_ID, book.id)
-        val success = db.delete(TABLE_BOOKS, _ID + "=" + book.id, null)
-        db.close()
-        return success
+        val selection = "$KEY_ID LIKE ? "
+        val selectionArgs = arrayOf(bookId)
+        return db.delete(TABLE_BOOKS, selection, selectionArgs)
     }
 
     fun fetchBook(bookId: String): BooksModel? {

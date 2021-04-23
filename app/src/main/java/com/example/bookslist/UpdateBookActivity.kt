@@ -1,11 +1,12 @@
 package com.example.bookslist
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 
@@ -26,9 +27,21 @@ class UpdateBookActivity : AppCompatActivity() {
         val saveButton = findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = findViewById<MaterialButton>(R.id.deleteButton)
 
-        deleteButton.setOnClickListener(View.OnClickListener {
-//            dataBaseHelper.deleteBook()
-        })
+        deleteButton.setOnClickListener {
+            val status = dataBaseHelper.deleteBook(bookId)
+            if (status <= -1) {
+                Toast.makeText(
+                    this,
+                    "book didn't delete!",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Toast.makeText(this, "book successfully deleted!", Toast.LENGTH_LONG).show()
+                setResult(Activity.RESULT_OK)
+                finish()
+            }
+
+        }
         saveButton.setOnClickListener {
             var isValid = true
             nameEditText.error = if (nameEditText.text.toString().isEmpty()) {
@@ -52,7 +65,7 @@ class UpdateBookActivity : AppCompatActivity() {
                     ).show()
                 } else {
                     Toast.makeText(this, "book successfully updated!", Toast.LENGTH_LONG).show()
-                    setResult(RESULT_OK, Intent())
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
             }

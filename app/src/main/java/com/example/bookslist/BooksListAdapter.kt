@@ -7,6 +7,7 @@ import android.provider.BaseColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 class BooksListAdapter(var booksList: ArrayList<BooksModel>, var context: Context) :
@@ -27,6 +28,7 @@ class BooksListAdapter(var booksList: ArrayList<BooksModel>, var context: Contex
                 val KEY_ID = BaseColumns._ID
                 intent.putExtra(KEY_ID, booksList[position].id)
                 (context as Activity).startActivity(intent)
+
             }
     }
 
