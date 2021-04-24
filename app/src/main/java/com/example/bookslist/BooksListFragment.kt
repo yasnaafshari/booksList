@@ -21,7 +21,7 @@ class BooksListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val dataBaseHelper = DataBaseHelper(this.context!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter(dataBaseHelper.showBooks(), this.context!!)
+        val adapter = BooksListAdapter(dataBaseHelper.showBooks(), fragmentManager!!)
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager

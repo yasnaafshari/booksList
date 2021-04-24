@@ -24,7 +24,6 @@ class AddBookFragment : Fragment() {
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
-        val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
         val dataBaseHelper = DataBaseHelper(this.context!!)
 
         saveButton.setOnClickListener {

@@ -23,14 +23,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         onCreate(db)
     }
 
-    companion object : BaseColumns {
-        private const val DATABASE_NAME = "booksDataBase"
-        private const val TABLE_BOOKS = "BooksTable"
-        private const val KEY_NAME = "name"
-        private const val KEY_AUTHOR = "author"
-        private const val KEY_ID = _ID
-
-    }
 
     fun addBook(name: String, author: String): Long {
         val db = this.writableDatabase
@@ -93,7 +85,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             KEY_NAME,
             KEY_AUTHOR
         )
-        val selection = KEY_ID + " LIKE ? "
+        val selection = "$KEY_ID LIKE ? "
         val selectionArgs = arrayOf(bookId)
         val cursor = db.query(
             TABLE_BOOKS,
@@ -108,15 +100,22 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val namePos = cursor.getColumnIndex(KEY_NAME)
         var name: String
         var author: String
-        var id: String
 
         while (cursor.moveToNext()) {
             author = cursor.getString(authorPos)
             name = cursor.getString(namePos)
-
             book = BooksModel(name, author, bookId)
         }
         cursor.close()
         return book
+    }
+
+    companion object : BaseColumns {
+        private const val DATABASE_NAME = "booksDataBase"
+        private const val TABLE_BOOKS = "BooksTable"
+        private const val KEY_NAME = "name"
+        private const val KEY_AUTHOR = "author"
+        private const val KEY_ID = _ID
+
     }
 }
