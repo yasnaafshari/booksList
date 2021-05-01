@@ -1,4 +1,7 @@
 package com.example.bookslist
 
-data class BooksModel(val name: String, val author: String, val id : String)
+data class BooksModel(
+    val name: String, val author: String, val id: String, val description: String? = null,
+    val imageLink: String? = null
+)
 

@@ -27,15 +27,14 @@ class BooksListFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab)
         floatingActionButton.setOnClickListener {
-            replaceDetailFragment()
+            replaceFragment(LinkFragment())
         }
-
     }
 
-    private fun replaceDetailFragment() {
+    private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.mainActivity, AddBookFragment())
+        transaction?.replace(R.id.mainActivity, fragment)
         transaction?.addToBackStack("add")
         transaction?.commit()
     }

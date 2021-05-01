@@ -23,8 +23,7 @@ class BooksListAdapter(
         holder.itemView
             .setOnClickListener {
                 val transaction = fragmentManager.beginTransaction()
-                val updateBookFragment = UpdateBookFragment(booksList[position].id)
-                transaction.replace(R.id.mainActivity, updateBookFragment)
+                transaction.replace(R.id.mainActivity, UpdateBookFragment(booksList[position].id))
                 transaction.commit()
             }
     }

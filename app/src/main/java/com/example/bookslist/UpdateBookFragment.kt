@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
+import com.squareup.picasso.Picasso
 
 
 class UpdateBookFragment(private val bookId: String) : Fragment() {
@@ -26,9 +29,14 @@ class UpdateBookFragment(private val bookId: String) : Fragment() {
         val dataBaseHelper = DataBaseHelper(this.context!!)
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
+        val desTextView = view.findViewById<TextView>(R.id.descriptionTextView)
+        val imageView = view.findViewById<ImageView>(R.id.bookImageView)
         val book = dataBaseHelper.fetchBook(bookId)
         nameEditText.setText(book?.name)
         authorEditText.setText(book?.author)
+        Picasso.get().load(book?.imageLink).into(imageView)
+        desTextView.text = book?.description
+
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
         deleteButton.setOnClickListener {
@@ -82,7 +90,6 @@ class UpdateBookFragment(private val bookId: String) : Fragment() {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.mainActivity, BooksListFragment())
-
         transaction?.commit()
     }
 }
