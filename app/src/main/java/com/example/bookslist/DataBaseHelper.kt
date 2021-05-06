@@ -4,11 +4,10 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
 import android.provider.BaseColumns._ID
-import java.util.ArrayList
+import java.util.*
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -57,14 +56,14 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val imagePos = cursor.getColumnIndex(KEY_IMAGE)
         var name: String
         var author: String
-        var id: String
+        var id: Int
         var image: String
         var des: String
 
         while (cursor.moveToNext()) {
             author = cursor.getString(authorPos)
             name = cursor.getString(namePos)
-            id = cursor.getString(idPos)
+            id = cursor.getInt(idPos)
             des = cursor.getString(desPos)
             image = cursor.getString(imagePos)
 
@@ -83,18 +82,18 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         contentValues.put(KEY_DESCRIPTION, book.description)
         contentValues.put(KEY_IMAGE, book.imageLink)
         val selection = "$KEY_ID LIKE ? "
-        val selectionArgs = arrayOf(book.id)
+        val selectionArgs = arrayOf(book.id.toString())
         return db.update(TABLE_BOOKS, contentValues, selection, selectionArgs)
     }
 
-    fun deleteBook(bookId: String): Int {
+    fun deleteBook(bookId: Int): Int {
         val db = this.writableDatabase
         val selection = "$KEY_ID LIKE ? "
-        val selectionArgs = arrayOf(bookId)
+        val selectionArgs = arrayOf(bookId.toString())
         return db.delete(TABLE_BOOKS, selection, selectionArgs)
     }
 
-    fun fetchBook(bookId: String): BooksModel? {
+    fun fetchBook(bookId: Int): BooksModel? {
         val db = this.readableDatabase
         var book: BooksModel? = null
         val columns: Array<String> = arrayOf(
@@ -104,7 +103,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             KEY_IMAGE
         )
         val selection = "$KEY_ID LIKE ? "
-        val selectionArgs = arrayOf(bookId)
+        val selectionArgs = arrayOf(bookId.toString())
         val cursor = db.query(
             TABLE_BOOKS,
             columns,

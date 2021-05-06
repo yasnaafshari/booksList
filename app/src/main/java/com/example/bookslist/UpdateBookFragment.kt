@@ -14,7 +14,7 @@ import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
 
-class UpdateBookFragment(private val bookId: String) : Fragment() {
+class UpdateBookFragment(private val bookId: Int) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +66,8 @@ class UpdateBookFragment(private val bookId: String) : Fragment() {
             if (isValid) {
                 val newName = nameEditText.text.toString()
                 val newAuthor = authorEditText.text.toString()
-                val newBook = BooksModel(newName, newAuthor, bookId)
+                val newBook =
+                    BooksModel(newName, newAuthor, bookId, book?.description, book?.imageLink)
                 val status = dataBaseHelper.updateBook(newBook)
                 if (status <= -1) {
                     Toast.makeText(
