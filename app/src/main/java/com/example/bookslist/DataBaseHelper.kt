@@ -27,16 +27,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
 
-    fun addBook(name: String, author: String, description: String, imageUrl: String): Long {
-        val db = this.writableDatabase
-        val contentValues = ContentValues()
-        contentValues.put(KEY_NAME, name)
-        contentValues.put(KEY_AUTHOR, author)
-        contentValues.put(KEY_DESCRIPTION, description)
-        contentValues.put(KEY_IMAGE, imageUrl)
-        return db.insert(TABLE_BOOKS, null, contentValues)
-    }
-
     fun showBooks(): ArrayList<BooksModel> {
         val booksList = ArrayList<BooksModel>()
         val db = this.readableDatabase

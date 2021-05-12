@@ -9,11 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
 class AddBookFragment(private val book: BooksModel) : Fragment() {
-
+    private lateinit var bookViewModel: BookViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -28,6 +29,7 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val desTextView = view.findViewById<TextView>(R.id.descriptionTextView)
         val imageView = view.findViewById<ImageView>(R.id.bookImageView)
+        bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
         Picasso.get().load(book.imageLink).into(imageView)
         nameEditText.setText(book.name)
         authorEditText.setText(book.author)
@@ -38,10 +40,9 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
         deleteButton.setOnClickListener {
             replaceListFragment()
         }
-        val dataBaseHelper = DataBaseHelper(this.context!!)
 
         saveButton.setOnClickListener {
-            saveBook(nameEditText, authorEditText, desTextView, book.imageLink!!, dataBaseHelper)
+            saveBook(nameEditText, authorEditText, desTextView, book.imageLink!!)
         }
     }
 
@@ -49,8 +50,7 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
         nameEditText: EditText,
         authorEditText: EditText,
         descriptionTextView: TextView,
-        imageUrl: String,
-        dataBaseHelper: DataBaseHelper
+        imageUrl: String
     ) {
         var isValid = true
         nameEditText.error = if (nameEditText.text.toString().isEmpty()) {
@@ -62,24 +62,22 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
             "Required Field"
         } else null
         if (isValid) {
-
-            val status = dataBaseHelper.addBook(
+            val book = Book(
                 nameEditText.text.toString(),
                 authorEditText.text.toString(),
+                0,
                 descriptionTextView.text.toString(),
                 imageUrl
-
             )
-            if (status <= -1) {
-                Toast.makeText(
-                    this.context,
-                    "book didn't save!",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else Toast.makeText(this.context, "book saved!", Toast.LENGTH_LONG).show()
-            replaceListFragment()
-        }
+            bookViewModel.insert(book, replaceListFragment())
 
+            Toast.makeText(
+                this.context,
+                "book saved!",
+                Toast.LENGTH_LONG
+            ).show()
+        } else Toast.makeText(this.context, "book didn't save!", Toast.LENGTH_LONG).show()
+        replaceListFragment()
     }
 
 
@@ -87,9 +85,6 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.mainActivity, BooksListFragment())
-
         transaction?.commit()
     }
-
-
 }
