@@ -4,7 +4,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class ParseBook {
-    fun parse(url: String, onSuccess: (BooksModel) -> Unit) {
+    fun parse(url: String, onSuccess: (Book) -> Unit) {
 
         val thread = Thread {
             val doc: Document = Jsoup.connect(url).get()
@@ -13,7 +13,7 @@ class ParseBook {
             val authorElement = doc.getElementsByClass("authorName")
             val desElement = doc.getElementById("description")
             val imageUrl: String = imageElement.absUrl("src")
-            var book = BooksModel(
+            var book = Book(
                 titleElement.text(),
                 authorElement.text(),
                 0,

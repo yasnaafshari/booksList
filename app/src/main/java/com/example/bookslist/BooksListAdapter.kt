@@ -6,10 +6,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 class BooksListAdapter(
-    var booksList: ArrayList<BooksModel>,
+
     private val fragmentManager: FragmentManager
 ) :
     RecyclerView.Adapter<BooksListViewHolder>() {
+    private var booksList: List<Book> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksListViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_books_list, parent, false)
@@ -31,5 +32,10 @@ class BooksListAdapter(
 
     override fun getItemCount(): Int {
         return booksList.size
+    }
+
+    fun setBookList(booksList: List<Book>) {
+        this.booksList = booksList
+        notifyDataSetChanged()
     }
 }

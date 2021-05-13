@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,10 +20,16 @@ class BooksListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val dataBaseHelper = DataBaseHelper(this.context!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter(dataBaseHelper.showBooks(), fragmentManager!!)
+        val adapter = BooksListAdapter(fragmentManager!!)
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        var bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
+        bookViewModel.getAllBooks().observe(this, { booksList ->
+            booksList?.let {
+                adapter.setBookList(booksList)
+            }
+        })
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = layoutManager
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab)

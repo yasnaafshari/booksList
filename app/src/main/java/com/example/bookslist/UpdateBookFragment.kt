@@ -26,65 +26,62 @@ class UpdateBookFragment(private val bookId: Int) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dataBaseHelper = DataBaseHelper(this.context!!)
         val nameEditText = view.findViewById<EditText>(R.id.nameEditText)
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val desTextView = view.findViewById<TextView>(R.id.descriptionTextView)
         val imageView = view.findViewById<ImageView>(R.id.bookImageView)
-        val book = dataBaseHelper.fetchBook(bookId)
-        nameEditText.setText(book?.name)
-        authorEditText.setText(book?.author)
-        Picasso.get().load(book?.imageLink).into(imageView)
-        desTextView.text = book?.description
+//        nameEditText.setText(book?.name)
+//        authorEditText.setText(book?.author)
+//        Picasso.get().load(book?.imageLink).into(imageView)
+//        desTextView.text = book?.description
 
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
-        deleteButton.setOnClickListener {
-            val status = dataBaseHelper.deleteBook(bookId)
-            if (status <= -1) {
-                Toast.makeText(
-                    this.context,
-                    "book didn't delete!",
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                Toast.makeText(this.context, "book successfully deleted!", Toast.LENGTH_LONG).show()
-                replaceListFragment()
-            }
-
-        }
-        saveButton.setOnClickListener {
-            var isValid = true
-            nameEditText.error = if (nameEditText.text.toString().isEmpty()) {
-                isValid = false
-                "Required Field"
-            } else null
-            authorEditText.error = if (authorEditText.text.toString().isEmpty()) {
-                isValid = false
-                "Required Field"
-            } else null
-            if (isValid) {
-                val newName = nameEditText.text.toString()
-                val newAuthor = authorEditText.text.toString()
-                val newBook =
-                    BooksModel(newName, newAuthor, bookId, book?.description, book?.imageLink)
-                val status = dataBaseHelper.updateBook(newBook)
-                if (status <= -1) {
-                    Toast.makeText(
-                        this.context,
-                        "book didn't update!",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    Toast.makeText(this.context, "book successfully updated!", Toast.LENGTH_LONG)
-                        .show()
-                    replaceListFragment()
-
-                }
-            }
-
-        }
-
+//        deleteButton.setOnClickListener {
+//            if (){
+//                Toast.makeText(
+//                    this.context,
+//                    "book didn't delete!",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            } else {
+//                Toast.makeText(this.context, "book successfully deleted!", Toast.LENGTH_LONG).show()
+//                replaceListFragment()
+//            }
+//
+//        }
+//        saveButton.setOnClickListener {
+//            var isValid = true
+//            nameEditText.error = if (nameEditText.text.toString().isEmpty()) {
+//                isValid = false
+//                "Required Field"
+//            } else null
+//            authorEditText.error = if (authorEditText.text.toString().isEmpty()) {
+//                isValid = false
+//                "Required Field"
+//            } else null
+//            if (isValid) {
+//                val newName = nameEditText.text.toString()
+//                val newAuthor = authorEditText.text.toString()
+//                val newBook =
+//                    BooksModel(newName, newAuthor, bookId, book?.description, book?.imageLink)
+//                val status = dataBaseHelper.updateBook(newBook)
+//                if (status <= -1) {
+//                    Toast.makeText(
+//                        this.context,
+//                        "book didn't update!",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                } else {
+//                    Toast.makeText(this.context, "book successfully updated!", Toast.LENGTH_LONG)
+//                        .show()
+//                    replaceListFragment()
+//
+//                }
+//            }
+//
+//        }
+//
     }
 
     private fun replaceListFragment() {

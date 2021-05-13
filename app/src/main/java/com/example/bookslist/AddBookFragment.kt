@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
-class AddBookFragment(private val book: BooksModel) : Fragment() {
+class AddBookFragment(private val book: Book) : Fragment() {
     private lateinit var bookViewModel: BookViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,8 +69,8 @@ class AddBookFragment(private val book: BooksModel) : Fragment() {
                 descriptionTextView.text.toString(),
                 imageUrl
             )
-            bookViewModel.insert(book, replaceListFragment())
-
+            bookViewModel.insert(book)
+            replaceListFragment()
             Toast.makeText(
                 this.context,
                 "book saved!",

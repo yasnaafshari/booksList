@@ -28,7 +28,7 @@ class LinkFragment : Fragment() {
         }
     }
 
-    private fun showAddFragment(book: BooksModel) {
+    private fun showAddFragment(book: Book) {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(
