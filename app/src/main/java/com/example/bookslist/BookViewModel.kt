@@ -5,8 +5,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 class BookViewModel(application: Application) : AndroidViewModel(application) {
+
     private val bookDao: BookDao
-     private val bookList : LiveData<List<Book>>
+    private val bookList: LiveData<List<Book>>
 
     init {
         val bookDb = BookRoomDatabase.getDatabase(application)
@@ -20,7 +21,8 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
         }
         thread.start()
     }
-    fun getAllBooks(): LiveData<List<Book>>{
+
+    fun getAllBooks(): LiveData<List<Book>> {
         return bookList
     }
 }

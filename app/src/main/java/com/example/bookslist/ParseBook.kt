@@ -1,10 +1,13 @@
 package com.example.bookslist
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class ParseBook {
-    fun parse(url: String, onSuccess: (Book) -> Unit) {
+    private val bookLiveData = MutableLiveData<Book>()
+    fun parse(url: String): LiveData<Book> {
 
         val thread = Thread {
             val doc: Document = Jsoup.connect(url).get()
@@ -13,16 +16,19 @@ class ParseBook {
             val authorElement = doc.getElementsByClass("authorName")
             val desElement = doc.getElementById("description")
             val imageUrl: String = imageElement.absUrl("src")
-            var book = Book(
+            val book = Book(
                 titleElement.text(),
                 authorElement.text(),
                 0,
                 desElement.text(),
                 imageUrl
             )
-            onSuccess(book)
+            bookLiveData.postValue(book)
+
         }
         thread.start()
+
+        return bookLiveData
 
     }
 }

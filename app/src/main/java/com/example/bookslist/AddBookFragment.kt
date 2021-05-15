@@ -29,7 +29,10 @@ class AddBookFragment(private val book: Book) : Fragment() {
         val authorEditText = view.findViewById<EditText>(R.id.authorEditText)
         val desTextView = view.findViewById<TextView>(R.id.descriptionTextView)
         val imageView = view.findViewById<ImageView>(R.id.bookImageView)
-        bookViewModel = ViewModelProvider(this).get(BookViewModel::class.java)
+        bookViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(this.activity!!.application)
+        ).get(BookViewModel::class.java)
         Picasso.get().load(book.imageLink).into(imageView)
         nameEditText.setText(book.name)
         authorEditText.setText(book.author)

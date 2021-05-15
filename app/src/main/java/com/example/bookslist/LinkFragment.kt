@@ -22,13 +22,13 @@ class LinkFragment : Fragment() {
         val searchBookButton = view.findViewById<MaterialButton>(R.id.searchButton)
         searchBookButton.setOnClickListener {
             val parseBook = ParseBook()
-            parseBook.parse(link.text.toString()) {
-                showAddFragment(it)
-            }
+            parseBook.parse(link.text.toString()).observe(this.viewLifecycleOwner, {
+                showAddBookFragment(it)
+            })
         }
     }
 
-    private fun showAddFragment(book: Book) {
+    private fun showAddBookFragment(book: Book) {
         val fragmentManager = fragmentManager
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(
