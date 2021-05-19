@@ -25,4 +25,17 @@ class BookViewModel(application: Application) : AndroidViewModel(application) {
     fun getAllBooks(): LiveData<List<Book>> {
         return bookList
     }
+    fun update(book: Book){
+        val thread = Thread {
+            bookDao.update(book)
+        }
+        thread.start()
+    }
+    fun delete(book: Book){
+        val thread = Thread {
+            bookDao.delete(book)
+        }
+        thread.start()
+    }
+
 }

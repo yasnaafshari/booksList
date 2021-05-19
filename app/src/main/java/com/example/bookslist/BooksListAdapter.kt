@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 
 class BooksListAdapter(
-
     private val fragmentManager: FragmentManager
 ) :
     RecyclerView.Adapter<BooksListViewHolder>() {
@@ -24,7 +23,7 @@ class BooksListAdapter(
         holder.itemView
             .setOnClickListener {
                 val transaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.mainActivity, UpdateBookFragment(booksList[position].id))
+                transaction.replace(R.id.mainActivity, UpdateBookFragment(booksList[position]))
                 transaction.commit()
             }
     }
