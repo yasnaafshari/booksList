@@ -31,7 +31,7 @@ class AddBookFragment(private val book: Book) : Fragment() {
         val imageView = view.findViewById<ImageView>(R.id.bookImageView)
         bookViewModel = ViewModelProvider(
             this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(this.activity!!.application)
+            ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().application)
         ).get(BookViewModel::class.java)
         Picasso.get().load(book.imageLink).into(imageView)
         nameEditText.setText(book.name)
@@ -65,10 +65,11 @@ class AddBookFragment(private val book: Book) : Fragment() {
             "Required Field"
         } else null
         if (isValid) {
+
             val book = Book(
                 nameEditText.text.toString(),
                 authorEditText.text.toString(),
-                0,
+                book.id,
                 descriptionTextView.text.toString(),
                 imageUrl
             )
