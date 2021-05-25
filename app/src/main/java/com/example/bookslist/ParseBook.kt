@@ -6,7 +6,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
 class ParseBook {
-    var id = 0
     fun parse(url: String): LiveData<Book> {
         val bookLiveData = MutableLiveData<Book>()
 
@@ -17,11 +16,10 @@ class ParseBook {
             val authorElement = doc.getElementsByClass("authorName")
             val desElement = doc.getElementById("description")
             val imageUrl: String = imageElement.absUrl("src")
-
             val book = Book(
                 titleElement.text(),
                 authorElement.text(),
-                id,
+                0,
                 desElement.text(),
                 imageUrl
             )
@@ -29,7 +27,7 @@ class ParseBook {
 
         }
         thread.start()
-        id++
+
         return bookLiveData
 
     }

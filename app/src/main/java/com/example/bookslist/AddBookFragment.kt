@@ -13,8 +13,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
-class AddBookFragment(private val book: Book) : Fragment() {
+class AddBookFragment : Fragment() {
+    companion object {
+        fun newInstance(book: Book): AddBookFragment {
+            val args = Bundle()
+            args.putParcelable("book", book)
+            val fragment = AddBookFragment()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     private lateinit var bookViewModel: BookViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,10 +44,11 @@ class AddBookFragment(private val book: Book) : Fragment() {
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().application)
         ).get(BookViewModel::class.java)
-        Picasso.get().load(book.imageLink).into(imageView)
-        nameEditText.setText(book.name)
-        authorEditText.setText(book.author)
-        desTextView.text = book.description
+        val book = arguments?.getParcelable<Book>("book")
+        Picasso.get().load(book?.imageLink).into(imageView)
+        nameEditText.setText(book?.name)
+        authorEditText.setText(book?.author)
+        desTextView.text = book?.description
 
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
@@ -45,7 +57,7 @@ class AddBookFragment(private val book: Book) : Fragment() {
         }
 
         saveButton.setOnClickListener {
-            saveBook(nameEditText, authorEditText, desTextView, book.imageLink!!)
+            saveBook(nameEditText, authorEditText, desTextView, book?.imageLink!!)
         }
     }
 
@@ -69,7 +81,7 @@ class AddBookFragment(private val book: Book) : Fragment() {
             val book = Book(
                 nameEditText.text.toString(),
                 authorEditText.text.toString(),
-                book.id,
+                arguments?.getParcelable<Book>("book")!!.id,
                 descriptionTextView.text.toString(),
                 imageUrl
             )

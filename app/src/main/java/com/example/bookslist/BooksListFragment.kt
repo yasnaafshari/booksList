@@ -22,13 +22,13 @@ class BooksListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter(fragmentManager!!)
+        val adapter = BooksListAdapter(requireFragmentManager())
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         bookViewModel = ViewModelProvider(
             this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(this.activity!!.application)
+            ViewModelProvider.AndroidViewModelFactory.getInstance(this.requireActivity().application)
         ).get(BookViewModel::class.java)
-        bookViewModel.getAllBooks().observe(this, { booksList ->
+        bookViewModel.getAllBooks().observe(viewLifecycleOwner, { booksList ->
             booksList?.let {
                 adapter.setBookList(booksList)
             }

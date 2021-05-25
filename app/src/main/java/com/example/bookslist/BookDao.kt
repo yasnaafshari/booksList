@@ -11,8 +11,9 @@ interface BookDao {
     @get:Query("SELECT * FROM books")
     val booksList: LiveData<List<Book>>
 
-@Update
+    @Update
     fun update(book: Book)
-@Delete
-fun delete(book: Book)
+
+    @Delete
+    fun delete(book: Book)
 }

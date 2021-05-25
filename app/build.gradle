@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id "org.jetbrains.kotlin.plugin.parcelize"
 }
 
 android {
@@ -56,10 +57,7 @@ dependencies {
     implementation "androidx.room:room-runtime:2.3.0"
     kapt "androidx.room:room-compiler:2.3.0"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
-
-
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
     implementation "androidx.paging:paging-runtime-ktx:3.0.0"
 
 }

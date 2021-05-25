@@ -33,7 +33,7 @@ class LinkFragment : Fragment() {
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(
             R.id.mainActivity,
-            AddBookFragment(book)
+            AddBookFragment.newInstance(book)
         )
         transaction?.commit()
     }
