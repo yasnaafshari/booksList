@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -22,7 +23,7 @@ class BooksListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.booksListRecycler)
-        val adapter = BooksListAdapter(requireFragmentManager())
+        val adapter = BooksListAdapter()
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         bookViewModel = ViewModelProvider(
             this,
@@ -38,15 +39,8 @@ class BooksListFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab)
         floatingActionButton.setOnClickListener {
-            replaceFragment(LinkFragment())
+            findNavController().navigate(R.id.action_booksListFragment_to_linkFragment)
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = fragmentManager
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.mainActivity, fragment)
-        transaction?.addToBackStack("add")
-        transaction?.commit()
-    }
 }

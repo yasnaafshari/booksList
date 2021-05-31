@@ -1,13 +1,12 @@
 package com.example.bookslist
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 
-class BooksListAdapter(
-    private val fragmentManager: FragmentManager
-) :
+class BooksListAdapter :
     RecyclerView.Adapter<BooksListViewHolder>() {
     private var booksList: List<Book> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BooksListViewHolder {
@@ -22,9 +21,10 @@ class BooksListAdapter(
         holder.bookAuthor.text = booksList[position].author
         holder.itemView
             .setOnClickListener {
-                val transaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.mainActivity, UpdateBookFragment(booksList[position]))
-                transaction.commit()
+                val args = Bundle()
+                args.putParcelable("UpdateBook", booksList[position])
+                val navController = findNavController(holder.itemView)
+                navController.navigate(R.id.action_booksListFragment_to_updateBookFragment, args)
             }
     }
 

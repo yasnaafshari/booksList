@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 
 class LinkFragment : Fragment() {
@@ -23,19 +24,12 @@ class LinkFragment : Fragment() {
         searchBookButton.setOnClickListener {
             val parseBook = ParseBook()
             parseBook.parse(link.text.toString()).observe(this.viewLifecycleOwner, {
-                showAddBookFragment(it)
+                val args = Bundle()
+                args.putParcelable("book", it)
+                findNavController().navigate(R.id.action_linkFragment_to_addBookFragment, args)
             })
         }
     }
 
-    private fun showAddBookFragment(book: Book) {
-        val fragmentManager = fragmentManager
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(
-            R.id.mainActivity,
-            AddBookFragment.newInstance(book)
-        )
-        transaction?.commit()
-    }
 }
 

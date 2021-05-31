@@ -7,22 +7,13 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Picasso
 
 class AddBookFragment : Fragment() {
-    companion object {
-        fun newInstance(book: Book): AddBookFragment {
-            val args = Bundle()
-            args.putParcelable("book", book)
-            val fragment = AddBookFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     private lateinit var bookViewModel: BookViewModel
 
@@ -31,7 +22,6 @@ class AddBookFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_books_detail, container, false)
     }
 
@@ -53,7 +43,7 @@ class AddBookFragment : Fragment() {
         val saveButton = view.findViewById<MaterialButton>(R.id.saveButton)
         val deleteButton = view.findViewById<MaterialButton>(R.id.deleteButton)
         deleteButton.setOnClickListener {
-            replaceListFragment()
+            findNavController().navigate(R.id.action_addBookFragment_to_booksListFragment)
         }
 
         saveButton.setOnClickListener {
@@ -86,21 +76,7 @@ class AddBookFragment : Fragment() {
                 imageUrl
             )
             bookViewModel.insert(book)
-            replaceListFragment()
-            Toast.makeText(
-                this.context,
-                "book saved!",
-                Toast.LENGTH_LONG
-            ).show()
-        } else Toast.makeText(this.context, "book didn't save!", Toast.LENGTH_LONG).show()
-        replaceListFragment()
-    }
-
-
-    private fun replaceListFragment() {
-        val fragmentManager = fragmentManager
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.mainActivity, BooksListFragment())
-        transaction?.commit()
+            findNavController().navigate(R.id.action_addBookFragment_to_booksListFragment)
+        }
     }
 }
